@@ -264,7 +264,7 @@ jobs:
           
       - name: ⚙️ Set ${{ env.KSU_TYPE }} (设置${{ env.KSU_TYPE }})
         run: |
-          cd kernel_workspace
+          cd kernel_workspace/common
           echo "正在配置${{ env.KSU_TYPE }}..."
           if [ "${{ env.KSU_TYPE }}" == 'ReSukiSU' ]; then
             curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/refs/heads/main/kernel/setup.sh" | bash -s main
