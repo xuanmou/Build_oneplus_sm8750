@@ -1,93 +1,170 @@
-[简体中文](README.md) | **`English`** <br>
+# OnePlus/Realme SM8750 Kernel Build Project
 
-[![GitHub](https://img.shields.io/badge/-GitHub|@showdo-181717?logo=github\&logoColor=white\&style=flat-square)](https://github.com/showdo/build_oneplus_sm8750)
+**[简体中文](README.md)** | `English`<br>
+
+[![GitHub](https://img.shields.io/badge/-GitHub|@showdo-181717?logo=github&logoColor=white&style=flat-square)](https://github.com/showdo/Build_Oneplus_Realme_Action)
 [![Telegram](https://img.shields.io/badge/Telegram-Channel-blue.svg?logo=telegram)](https://t.me/qdykernel)
-[![Coolapk|Home](https://img.shields.io/badge/Coolapk%7CHome-3DDC84?style=flat-square\&logo=android\&logoColor=white)](http://www.coolapk.com/u/1624571)
-[![OnePlus Manifest](https://img.shields.io/badge/OnePlus_Manifest-EB0029?logo=oneplus\&logoColor=white\&style=flat-square)](https://github.com/OnePlusOSS/kernel_manifest) <br><b>This Special thanks for build support to：</b>[![GitHub](https://img.shields.io/badge/-GitHub|@HanKuCha-181717?logo=github\&logoColor=white\&style=flat-square)](https://github.com/HanKuCha/oneplus13_a5p_sukisu)<br>
-
-# This repository provides two build methods
-
-## ✨① Workflow Cloud Build Script Usage
-
-#### Please use a VPN to open the following link:
-
-```bash
-https://t.me/qdyKernel/405
-```
-
-## 🎁② Local Script Usage
-
-> ⚠️ Note: If you want to use your own forked repository for building, and you changed the repository name when forking, please replace `build_oneplus_sm8750` in the instructions below with your new project name, and change `showdo` in the link below to your GitHub username.
-> For example, if your username is `abcd` and your repository name is `123456`, the command would be:
-> `git clone https://github.com/abcd/123456.git`
+[![CoolAPK|Profile](https://img.shields.io/badge/CoolAPK%7CProfile-3DDC84?style=flat-square&logo=android&logoColor=white)](http://www.coolapk.com/u/1624571)
+[![Workflow Status](https://img.shields.io/github/actions/workflow/status/showdo/Build_Oneplus_Realme_Action/Build_oneplus_sm8750.yml?label=Build&logo=github-actions&style=flat-square)](https://github.com/showdo/Build_Oneplus_Realme_Action/actions)
+<br>
 
 ---
 
-```bash
-git clone https://github.com/showdo/build_oneplus_sm8750.git
-```
+## 📖 Introduction
 
-```bash
-cd build_oneplus_sm8750
-```
+ This project provides automated kernel compilation workflow based on **GitHub Actions**, supporting multiple **OnePlus** and **Realme** devices powered by **SM8750** platform. Through highly integrated scripts, it enables one-click compilation of OKI kernels with features including **(Re)SukiSU**, **SUSFS**, **Fengchi Scheduler**, and more.
 
-```bash
-chmod +x Build_sm8750.sh
-```
+### ✨ Key Features
 
-```bash
-./Build_sm8750.sh
+ - 🚀 **Fully Automated** - GitHub Actions based, no local environment required
+ - 🔧 **Multiple KSU Options** - ReSukiSU / SukiSU-Ultra selectable
+ - 📱 **Multi-Device Support** - 10 OnePlus/Realme devices supported
+ - ⚡ **Performance Optimized** - Integrated perfect Fengchi scheduler patch
+ - 💾 **ccache Caching** - Intelligent cache management, 50% faster for first build with public cache, 80% faster for rebuilds
+ - 📦 **Ready to Use** - Automatically generates AnyKernel3 flashable packages
+
+---
+
+## 📱 Supported Devices
+
+| # | Device Name | Codename | Platform |
+|---|-------------|----------|----------|
+| 1 | OnePlus 13 | `oneplus_13` | SM8750 |
+| 2 | OnePlus Ace 5 Pro | `oneplus_ace5_pro` | SM8750 |
+| 3 | OnePlus Ace 6 | `oneplus_ace_6` | SM8750 |
+| 4 | OnePlus 13T | `oneplus_13t` | SM8750 |
+| 5 | OnePlus Pad 2 Pro | `oneplus_pad_2_pro` | SM8750 |
+| 6 | OnePlus Ace5 Ultra | `oneplus_ace5_ultra` | MT6991 |
+| 7 | Realme GT 7 | `realme_GT7` | MT6991 |
+| 8 | Realme GT 7 Pro | `realme_GT7pro` | SM8750 |
+| 9 | Realme GT 7 Pro Speed | `realme_GT7pro_Speed` | SM8750 |
+| 10 | Realme GT 8 | `realme_GT8` | SM8750 |
+
+---
+
+## 🎯 Quick Start
+
+### Method 1: GitHub Actions Cloud Build (Recommended)
+
+#### Step 1. Fork This Repository
+
+Click the **Fork** button in the upper right corner to copy this repository to your own GitHub account.
+
+#### Step 2. Run the Workflow
+
+ 1. Go to your forked repository
+ 2. Click the **Actions** tab
+ 3. Select the corresponding workflow (see table below)
+ 4. Click **Run workflow** button
+ 5. Fill in compilation parameters
+ 6. Wait for compilation to complete (approximately 12 minutes for first build)
+ 7. Download build artifacts from **Artifacts** section
+
+### 📋 Available Workflows
+
+| Workflow | Description | Use Case |
+|----------|-------------|----------|
+| [Build_oneplus_sm8750](.github/workflows/Build_oneplus_sm8750.yml) | Full kernel build (with KSU/SUSFS etc.) |
+| [Build_kernel_only](.github/workflows/Build_kernel_only.yml) | Official source build without Root | Stock kernel without KSU integration |
+| [clean-caches](.github/workflows/clean-caches.yml) | Clean ccache caches | When cache is corrupted or needs rebuild |
+| [Clear_All_Workflow](.github/workflows/Clear_All_Workflow.yml) | Clean workflow run records | Keep Actions page tidy |
+
+---
+
+
+## 🔧 Advanced Features
+
+
+ #### Using Public Cache
+
+ The project automatically downloads public cache from [Public_Ccache_SM8750](https://github.com/showdo/Build_Oneplus_Realme_Action/releases/tag/Public_Ccache_SM8750), enabling acceleration even for first-time builds.
+
+ #### Cleaning Old Cache
+
+ When build time exceeds 8 minutes, old ccache caches are automatically cleaned to avoid excessive GitHub storage usage. You can also manually run the [clean-caches](.github/workflows/clean-caches.yml) workflow to clear all caches.
+
+ ---
+
+ ### Log Analysis
+
+ #### Viewing Build Logs
+
+ 1. Go to **Actions** page
+ 2. Click corresponding workflow run record
+ 3. Expand each step to view detailed output
+ 4. Focus on error steps
+
+ #### Key Log Markers
+
+ ```
+ [INFO]    - General information
+ [SUCCESS] - Successfully completed
+ [ERROR]   - Error (requires immediate attention)
+ ```
+
+---
+
+## 🔗 Related Resources
+
+ ### Related Projects
+
+ - [OnePlus Kernel Open Source](https://github.com/OnePlusOSS/kernel_manifest)
+ - [SukiSU-Ultra Project](https://github.com/SukiSU-Ultra/SukiSU-Ultra)
+ - [ReSukiSU Project](https://github.com/ReSukiSU/ReSukiSU)
+ - [Fengchi Scheduler Patch](https://github.com/Numbersf/SCHED_PATCH)
+
+### Community Support
+
+ - **Telegram Channel**: [@qdykernel](https://t.me/qdykernel)
+ - **CoolAPK Profile**: [@showdo](http://www.coolapk.com/u/1624571)
+ - **GitHub Issues**: [Submit Issue](https://github.com/showdo/Build_Oneplus_Realme_Action/issues)
+
+### Credits
+
+ This project build support from:
+ - [HanKuCha](https://github.com/HanKuCha/oneplus13_a5p_sukisu)
+ - [cctv18](https://github.com/cctv18) - Toolchain and patch support
+
+---
+
+## 📜 License
+
+This project is licensed under **GPL-3.0**.
+
+```
+Copyright (C) 2024 showdo
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ```
 
 ---
 
-## For Windows, it is recommended to use WSL
+## 📈 Project Statistics
 
-Here is a method to migrate WSL to another drive (such as E drive) to avoid occupying C drive space.
-
-### Steps to migrate WSL2 to another directory
-
-1. Open PowerShell as Administrator and check the current WSL version:
-
-```powershell
-wsl -l -v
-```
-
-2. Stop all running WSL instances:
-
-```powershell
-wsl --shutdown
-```
-
-3. Export the Linux distribution you want to migrate (for example, Ubuntu-20.04):
-
-```powershell
-wsl --export Ubuntu-20.04 E:/ubuntu.tar
-```
-
-4. Unregister the original Linux distribution:
-
-```powershell
-wsl --unregister Ubuntu-20.04
-```
-
-5. Import the exported distribution into the new directory:
-
-```powershell
-wsl --import Ubuntu-20.04 E:\ubuntu\ E:\ubuntu.tar --version 2
-```
-
-6. Set the default user:
-
-```powershell
-ubuntu2004.exe config --default-user <username>
-```
-
-> Please replace `<username>` with the username you set when installing WSL.
-> For example, if my username is `qiudaoyu`, the command is:
-
-```powershell
-ubuntu2004.exe config --default-user qiudaoyu
-```
+[![Star History Chart](https://api.star-history.com/svg?repos=showdo/Build_Oneplus_Realme_Action&type=Date)](https://star-history.com/#showdo/Build_Oneplus_Realme_Action&Date)
 
 ---
+
+## 📞 Contact
+
+For questions or suggestions, please contact via:
+
+- **Telegram**: [@qdykernel](https://t.me/qdykernel)
+- **GitHub Issues**: [Create Issue](https://github.com/showdo/Build_Oneplus_Realme_Action/issues)
+- **CoolAPK**: DM [@showdo](http://www.coolapk.com/u/1624571)
+
+---
+
+**Last Updated**: March 15, 2026  
+**Maintenance Status**: 🟢 Actively Maintained
