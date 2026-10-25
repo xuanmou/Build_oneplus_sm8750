@@ -20,6 +20,7 @@
 - 🔧 **多种 KSU 支持** - ReSukiSU / SukiSU-Ultra 可选
 - 📱 **多机型适配** - 支持 10 款 OnePlus/Realme 设备
 - ⚡ **性能优化** - 集成完美风驰调度补
+- 🔒 **安全修复** - 修复 Unicode 零宽字符（ignorable code points）绕过漏洞
 - 💾 **ccache 缓存** - 智能缓存管理，首次编译使用公共缓存提速 50%，二次编译提速 80%
 - 📦 **开箱即用** - 自动生成 AnyKernel3 刷入包
 

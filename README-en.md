@@ -20,6 +20,7 @@
  - 🔧 **Multiple KSU Options** - ReSukiSU / SukiSU-Ultra selectable
  - 📱 **Multi-Device Support** - 10 OnePlus/Realme devices supported
  - ⚡ **Performance Optimized** - Integrated perfect Fengchi scheduler patch
+- 🔒 **Security Fix** - Patches the Unicode zero-width (ignorable code points) bypass vulnerability
  - 💾 **ccache Caching** - Intelligent cache management, 50% faster for first build with public cache, 80% faster for rebuilds
  - 📦 **Ready to Use** - Automatically generates AnyKernel3 flashable packages
 

@@ -56,7 +56,11 @@ on:
         default: true
         type: boolean
 
-       
+      enable_unicode_fix:
+        description: "修复 Unicode 零宽字符绕过漏洞"
+        required: true
+        default: true
+        type: boolean
 
 
 jobs:
@@ -71,6 +75,7 @@ jobs:
       CUSTOM_KERNEL_TIME:     ${{ github.event.inputs.custom_kernel_time }}
       ENABLE_SCX:       ${{ github.event.inputs.enable_scx }}
       ENABLE_BBG:       ${{ github.event.inputs.enable_bbg }}
+      ENABLE_UNICODE_FIX: ${{ github.event.inputs.enable_unicode_fix }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -261,7 +266,40 @@ jobs:
           curl -LSs https://raw.githubusercontent.com/vc-teahouse/Baseband-guard/main/setup.sh | bash
           sed -i '/^config LSM$/,/^help$/{ /^[[:space:]]*default/ { /baseband_guard/! s/lockdown/lockdown,baseband_guard/ } }' ./security/Kconfig
 
-          
+      - name: 🔧 Fix Unicode Zero-Width Bypass (修复零宽字符绕过漏洞)
+        if: ${{ env.ENABLE_UNICODE_FIX == 'true' }}
+        working-directory: kernel_workspace/common
+        run: |
+            echo "开始修复 Unicode 零宽字符绕过漏洞…"
+            PATCH_FILE="${GITHUB_WORKSPACE}/patch/Fix_Unicode_Bypass_ZeroWidth.patch"
+            if [ ! -f "$PATCH_FILE" ]; then
+              echo "::error::未找到 Unicode 零宽字符绕过漏洞修复补丁"
+              exit 1
+            fi
+            if [ ! -f fs/unicode/mkutf8data.c ]; then
+              echo "::warning::未找到 fs/unicode/mkutf8data.c，跳过零宽字符修复"
+              exit 0
+            fi
+            if ! grep -q 'ignore_init' fs/unicode/mkutf8data.c; then
+              echo "✓ 内核已包含该修复，跳过应用补丁"
+              exit 0
+            fi
+            cp "$PATCH_FILE" ./Fix_Unicode_Bypass_ZeroWidth.patch
+            dos2unix Fix_Unicode_Bypass_ZeroWidth.patch
+            if ! patch -p1 --dry-run -F 3 < Fix_Unicode_Bypass_ZeroWidth.patch; then
+              echo "::warning::补丁与当前内核源码不匹配，跳过零宽字符修复"
+              rm -f Fix_Unicode_Bypass_ZeroWidth.patch
+              exit 0
+            fi
+            echo "开始应用零宽字符修复补丁"
+            patch -p1 -F 3 < Fix_Unicode_Bypass_ZeroWidth.patch
+            rm -f Fix_Unicode_Bypass_ZeroWidth.patch
+            if grep -q 'ignore_init' fs/unicode/mkutf8data.c; then
+              echo "::error::零宽字符修复补丁应用失败"
+              exit 1
+            fi
+            echo "✅ 零宽字符绕过漏洞修复完成（大小写不敏感目录的查找性能会略有下降）"
+
       - name: ⚙️ Set ${{ env.KSU_TYPE }} (设置${{ env.KSU_TYPE }})
         run: |
           cd kernel_workspace/common
